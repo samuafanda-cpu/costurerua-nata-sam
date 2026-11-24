@@ -1,0 +1,7 @@
+CREATE DATABASE IF NOT EXISTS costureria CHARACTER SET utf8mb4;
+USE costureria;
+CREATE TABLE IF NOT EXISTS CLIENTE (id_cliente INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(100) NOT NULL, telefono VARCHAR(20) NOT NULL, correo VARCHAR(120) NOT NULL);
+CREATE TABLE IF NOT EXISTS ORDEN (id_orden INT AUTO_INCREMENT PRIMARY KEY, id_cliente INT NOT NULL, fecha_recepcion DATETIME NOT NULL, FOREIGN KEY(id_cliente) REFERENCES CLIENTE(id_cliente));
+CREATE TABLE IF NOT EXISTS PRENDA (id_prenda INT AUTO_INCREMENT PRIMARY KEY, id_orden INT NOT NULL, tipo VARCHAR(50) NOT NULL, descripcion VARCHAR(200), estado VARCHAR(30) NOT NULL CHECK(estado IN ('recibido','en proceso','listo','entregado')), fecha_estimada DATE, fecha_entrega DATE, FOREIGN KEY(id_orden) REFERENCES ORDEN(id_orden));
+CREATE TABLE IF NOT EXISTS SERVICIO (id_servicio INT AUTO_INCREMENT PRIMARY KEY, nombre VARCHAR(80) NOT NULL, precio_base DECIMAL(10,2) NOT NULL CHECK(precio_base >= 0));
+CREATE TABLE IF NOT EXISTS PRENDA_SERVICIO (id_prenda INT NOT NULL, id_servicio INT NOT NULL, precio_acordado DECIMAL(10,2) NOT NULL CHECK(precio_acordado >= 0), observaciones VARCHAR(200), PRIMARY KEY(id_prenda,id_servicio), FOREIGN KEY(id_prenda) REFERENCES PRENDA(id_prenda), FOREIGN KEY(id_servicio) REFERENCES SERVICIO(id_servicio));
